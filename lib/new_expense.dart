@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
 
   @override
   State<NewExpense> createState() {
@@ -37,6 +39,48 @@ class _NewExpense extends State<NewExpense> {
     setState(() {
       _selectedDate = pickerDate;
     });
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final isAmountInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        isAmountInvalid ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: ((ctx) => AlertDialog(
+              title: const Text(
+                'Invalid Input.',
+              ),
+              content: const Text(
+                'Please insert a valid title, amount, date and category.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                  },
+                  child: const Text(
+                    'Okay',
+                  ),
+                )
+              ],
+            )),
+      );
+      return;
+    }
+
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
+
+    Navigator.pop(context);
   }
 
   @override
@@ -125,10 +169,7 @@ class _NewExpense extends State<NewExpense> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                },
+                onPressed: _submitExpenseData,
                 child: const Text(
                   'Save Expense',
                 ),
