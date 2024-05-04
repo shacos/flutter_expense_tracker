@@ -35,10 +35,9 @@ class _ExpensesState extends State<Expenses> {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
+      constraints: const BoxConstraints(maxWidth: double.infinity),
       context: context,
-      builder: (ctx) => NewExpense(
-        onAddExpense: _addExpense,
-      ),
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
     );
   }
 
@@ -90,16 +89,13 @@ class _ExpensesState extends State<Expenses> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'Flutter ExpenseTracker',
-        ),
+        title: const Text('Flutter ExpenseTracker'),
         actions: [
           IconButton(
             onPressed: _openAddExpenseOverlay,
-            icon: const Icon(
-              Icons.add,
-            ),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
