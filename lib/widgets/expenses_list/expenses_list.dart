@@ -15,23 +15,21 @@ class ExpensesList extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: expenses.length,
-        itemBuilder: (context, index) => Dismissible(
-          key: ValueKey(expenses[index]),
-          background: Container(
-            color: Theme.of(context).colorScheme.error.withOpacity(0.75),
-            margin: EdgeInsets.symmetric(
-              horizontal: Theme.of(context).cardTheme.margin!.horizontal,
-            ),
+    return ListView.builder(
+      itemCount: expenses.length,
+      itemBuilder: (context, index) => Dismissible(
+        key: ValueKey(expenses[index]),
+        background: Container(
+          color: Theme.of(context).colorScheme.error.withOpacity(0.75),
+          margin: EdgeInsets.symmetric(
+            horizontal: Theme.of(context).cardTheme.margin!.horizontal,
           ),
-          onDismissed: (dismiss) {
-            onRemoveExpense(expenses[index]);
-          },
-          child: ExpenseItem(
-            expenses[index],
-          ),
+        ),
+        onDismissed: (dismiss) {
+          onRemoveExpense(expenses[index]);
+        },
+        child: ExpenseItem(
+          expenses[index],
         ),
       ),
     );
